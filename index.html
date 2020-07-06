@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="François Michonneau &amp; Auriel Fournier (Lesson Maintainers)" />
+
+
+<title>Data Analysis and Visualization in R for Ecologists</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="shortcut icon" href="favicon/favicon.ico">
+<link rel="icon" sizes="16x16 32x32 64x64" href="favicon/favicon.ico">
+<link rel="icon" type="image/png" sizes="196x196" href="favicon/favicon-192.png">
+<link rel="icon" type="image/png" sizes="160x160" href="favicon/favicon-160.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon/favicon-64.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16.png">
+<link rel="apple-touch-icon" href="favicon/favicon-57.png">
+<link rel="apple-touch-icon" sizes="114x114" href="favicon/favicon-114.png">
+<link rel="apple-touch-icon" sizes="72x72" href="favicon/favicon-72.png">
+<link rel="apple-touch-icon" sizes="144x144" href="favicon/favicon-144.png">
+<link rel="apple-touch-icon" sizes="60x60" href="favicon/favicon-60.png">
+<link rel="apple-touch-icon" sizes="120x120" href="favicon/favicon-120.png">
+<link rel="apple-touch-icon" sizes="76x76" href="favicon/favicon-76.png">
+<link rel="apple-touch-icon" sizes="152x152" href="favicon/favicon-152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/favicon-180.png">
+<meta name="msapplication-TileColor" content="#FFFFFF">
+<meta name="msapplication-TileImage" content="favicon/favicon-144.png">
+<meta name="msapplication-config" content="favicon/browserconfig.xml">
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+  $( function() {
+  $( ".accordion" ).accordion({
+      heightStyle: "content",
+      active: false,
+      collapsible: true
+    });
+  } );
+</script>
+
+<script>
+  <!-- search menu pop-up --->
+  $(function() {
+    function slideToggle() {
+      $("#search-box").toggle("slide", 500);
+  };
+  $("#search-icon").on("click", function() {
+  slideToggle();
+  });
+  });
+</script>
+
+
+
+<!-- Motomo analytics -->
+
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+
+
+<!-- add  Algolia DocSearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
+<!-- Matomo -->
+<script type="text/javascript">
+  var _paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://carpentries.matomo.cloud/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src='https://cdn.matomo.cloud/carpentries.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li>
+          <a href="00-before-we-start.html">Before we start</a>
+        </li>
+        <li>
+          <a href="01-intro-to-r.html">Intro to R</a>
+        </li>
+        <li>
+          <a href="02-starting-with-data.html">Starting with data</a>
+        </li>
+        <li>
+          <a href="03-dplyr.html">Manipulating data</a>
+        </li>
+        <li>
+          <a href="04-visualization-ggplot2.html">Visualizing data</a>
+        </li>
+        <li>
+          <a href="05-r-and-databases.html">R and SQL</a>
+        </li>
+        <li>
+          <a href="code-handout.R">Code Handout</a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <div class="btn-group" style="margin-right: 10px;">
+            <a type="button" class="btn btn-sm btn-success navbar-btn" href="https://carpentries.wedid.it" onclick="_paq.push(['trackEvent', 'donate', 'click', 'top-button']);">Donate</a>
+            <a type="button" class="btn btn-sm btn-success navbar-btn"  data-toggle="tooltip" data-placement="bottom" title="If this lesson is useful to you, consider making a contribution to The Carpentries by clicking on the 'Donate' button. Thank you for your support!">
+              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="sr-only">Toggle Tooltip</span>
+            </a>
+          </div>
+        </li>
+	<li class="search">
+	  <input id="search-box" type="text"  placeholder="Search...">
+	  <input type="submit">
+	</li>
+	<li class="search">
+	  <span id ="search-icon"><i class="fa fa-search fa-lg"></i></span>
+	</li>
+        <li>
+	  <a href="https://github.com/datacarpentry/R-ecology-lesson">
+	    <span class="fa fa-github fa-lg"></span>
+	  </a>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Data Analysis and Visualization in R for Ecologists</h1>
+<h4 class="author">François Michonneau &amp; Auriel Fournier (Lesson Maintainers)</h4>
+
+</div>
+
+
+<p>
+</p>
+<div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+<p><img src="img/DC-logo-vision.png" /></p>
+</div>
+<p>
+</p>
+<p>Data Carpentry’s aim is to teach researchers basic concepts, skills, and tools for working with data so that they can get more done in less time, and with less pain. The lessons below were designed for those interested in working with ecology data in R.</p>
+<p>This is an introduction to R designed for participants with no programming experience. These lessons can be taught in a day (~ 6 hours). They start with some basic information about R syntax, the RStudio interface, and move through how to import CSV files, the structure of data frames, how to deal with factors, how to add/remove rows and columns, how to calculate summary statistics from a data frame, and a brief introduction to plotting. The last lesson demonstrates how to work with databases directly from R.</p>
+<div id="episodes" class="section level2">
+<h2>Episodes</h2>
+<ol style="list-style-type: decimal">
+<li><a href="00-before-we-start.html">Before we start</a></li>
+<li><a href="01-intro-to-r.html">Introduction to R</a></li>
+<li><a href="02-starting-with-data.html">Starting with data</a></li>
+<li><a href="03-dplyr.html">Manipulating, analyzing and exporting data with <strong><code>tidyverse</code></strong></a></li>
+<li><a href="04-visualization-ggplot2.html">Data visualization with <strong><code>ggplot2</code></strong></a></li>
+<li><a href="05-r-and-databases.html">SQL databases and R</a></li>
+</ol>
+</div>
+<div id="requirements" class="section level2">
+<h2>Requirements</h2>
+<p>Data Carpentry’s teaching is hands-on, so participants are encouraged to use their own computers to ensure the proper setup of tools for an efficient workflow. <em>These lessons assume no prior knowledge of the skills or tools</em>, but working through this lesson requires working copies of the software described below. To most effectively use these materials, please make sure to download the data and install everything <em>before</em> working through this lesson.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>Data files for the lesson are available and can be downloaded manually here: <a href="https://doi.org/10.6084/m9.figshare.1314459" class="uri">https://doi.org/10.6084/m9.figshare.1314459</a></p>
+<p>However, we will download them directly from R during the lessons when we need them.</p>
+</div>
+<div id="setup-instructions" class="section level3">
+<h3>Setup instructions</h3>
+<p><strong>R</strong> and <strong>RStudio</strong> are separate downloads and installations. R is the underlying statistical computing environment, but using R alone is no fun. RStudio is a graphical integrated development environment (IDE) that makes using R much easier and more interactive. You need to install R before you install RStudio. After installing both programs, you will need to install the <strong><code>tidyverse</code></strong> package from within RStudio. Follow the instructions below for your operating system, and then follow the instructions to install <strong><code>tidyverse</code></strong> and <strong><code>RSQLite</code></strong>.</p>
+<div id="windows" class="section level4">
+<h4>Windows</h4>
+<div id="if-you-already-have-r-and-rstudio-installed" class="section level5">
+<h5>If you already have R and RStudio installed</h5>
+<ul>
+<li>Open RStudio, and click on “Help” &gt; “Check for updates”. If a new version is available, quit RStudio, and download the latest version for RStudio.</li>
+<li>To check which version of R you are using, start RStudio and the first thing that appears in the console indicates the version of R you are running. Alternatively, you can type <code>sessionInfo()</code>, which will also display which version of R you are running. Go on the <a href="https://cran.r-project.org/bin/windows/base/">CRAN website</a> and check whether a more recent version is available. If so, please download and install it. You can <a href="https://cran.r-project.org/bin/windows/base/rw-FAQ.html#How-do-I-UNinstall-R_003f">check here</a> for more information on how to remove old versions from your system if you wish to do so.</li>
+</ul>
+</div>
+<div id="if-you-dont-have-r-and-rstudio-installed" class="section level5">
+<h5>If you don’t have R and RStudio installed</h5>
+<ul>
+<li>Download R from the <a href="https://cran.r-project.org/bin/windows/base/release.htm">CRAN website</a>.</li>
+<li>Run the <code>.exe</code> file that was just downloaded</li>
+<li>Go to the <a href="https://www.rstudio.com/products/rstudio/download/#download">RStudio download page</a></li>
+<li>Under <em>Installers</em> select <strong>RStudio x.yy.zzz - Windows Vista/7/8/10</strong> (where x, y, and z represent version numbers)</li>
+<li>Double click the file to install it</li>
+<li>Once it’s installed, open RStudio to make sure it works and you don’t get any error messages.</li>
+</ul>
+</div>
+</div>
+<div id="macos" class="section level4">
+<h4>macOS</h4>
+<div id="if-you-already-have-r-and-rstudio-installed-1" class="section level5">
+<h5>If you already have R and RStudio installed</h5>
+<ul>
+<li>Open RStudio, and click on “Help” &gt; “Check for updates”. If a new version is available, quit RStudio, and download the latest version for RStudio.</li>
+<li>To check the version of R you are using, start RStudio and the first thing that appears on the terminal indicates the version of R you are running. Alternatively, you can type <code>sessionInfo()</code>, which will also display which version of R you are running. Go on the <a href="https://cran.r-project.org/bin/macosx/">CRAN website</a> and check whether a more recent version is available. If so, please download and install it.</li>
+</ul>
+</div>
+<div id="if-you-dont-have-r-and-rstudio-installed-1" class="section level5">
+<h5>If you don’t have R and RStudio installed</h5>
+<ul>
+<li>Download R from the <a href="https://cran.r-project.org/bin/macosx/">CRAN website</a>.</li>
+<li>Select the <code>.pkg</code> file for the latest R version</li>
+<li>Double click on the downloaded file to install R</li>
+<li>It is also a good idea to install <a href="https://www.xquartz.org/">XQuartz</a> (needed by some packages)</li>
+<li>Go to the <a href="https://www.rstudio.com/products/rstudio/download/#download">RStudio download page</a></li>
+<li>Under <em>Installers</em> select <strong>RStudio x.yy.zzz - Mac OS X 10.6+ (64-bit)</strong> (where x, y, and z represent version numbers)</li>
+<li>Double click the file to install RStudio</li>
+<li>Once it’s installed, open RStudio to make sure it works and you don’t get any error messages.</li>
+</ul>
+</div>
+</div>
+<div id="linux" class="section level4">
+<h4>Linux</h4>
+<ul>
+<li>Follow the instructions for your distribution from <a href="https://cloud.r-project.org/bin/linux">CRAN</a>, they provide information to get the most recent version of R for common distributions. For most distributions, you could use your package manager (e.g., for Debian/Ubuntu run <code>sudo apt-get install r-base</code>, and for Fedora <code>sudo yum install R</code>), but we don’t recommend this approach as the versions provided by this are usually out of date. In any case, make sure you have at least R 3.3.1.</li>
+<li>Go to the <a href="https://www.rstudio.com/products/rstudio/download/#download">RStudio download page</a></li>
+<li>Under <em>Installers</em> select the version that matches your distribution, and install it with your preferred method (e.g., with Debian/Ubuntu <code>sudo dpkg -i rstudio-x.yy.zzz-amd64.deb</code> at the terminal).</li>
+<li>Once it’s installed, open RStudio to make sure it works and you don’t get any error messages.</li>
+</ul>
+</div>
+<div id="for-everyone" class="section level4">
+<h4>For everyone</h4>
+<p><strong>After installing R and RStudio, you need to install the <code>tidyverse</code> and <code>RSQLite</code> packages.</strong></p>
+<ul>
+<li><p>After starting RStudio, at the console type: <code>install.packages(c(&quot;tidyverse&quot;, &quot;RSQLite&quot;))</code></p></li>
+<li><p>You can also do this by going to Tools -&gt; Install Packages and typing the names of the packages separated by a comma.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="contributors" class="section level2">
+<h2>Contributors</h2>
+<p>The list of contributors to this lesson is available <a href="https://datacarpentry.org/R-ecology-lesson/CITATION">here</a>.</p>
+<p style="text-align: right; font-size: small;">
+Page built on: 📆 2020-07-06 ‒ 🕢 15:34:13
+</p>
+</div>
+
+<hr/>
+<div class="row">
+  <div class="col-md-7 text-left">
+    <p class="text-muted">
+      <a href="https://datacarpentry.org/">Data Carpentry</a>,  2014-2019.
+    </p>
+    <p class="text-muted">
+      <a href="LICENSE.html">License</a>.
+      <a href="CONTRIBUTING.html">Contributing</a>.
+    </p>
+    <p class="text-muted">
+      Questions?  Feedback?
+      Please <a href="https://github.com/datacarpentry/R-ecology-lesson/issues/new">file
+        an issue on GitHub</a>. <br/>
+      On Twitter: <a href="https://twitter.com/datacarpentry">@datacarpentry</a>
+    </p>
+  </div>
+  <div class="col-md-5 text-right">
+    <p class="text-muted">
+      If this lesson is useful to you, consider <a href="https://carpentries.org/newsletter/"><bold>subscribing to our newsletter</bold></a> or
+      <a href="https://carpentries.wedid.it"  onclick="_paq.push(['trackEvent', 'donate', 'click', 'bottom-button']);">making a donation</a> to support the work of
+      <span class="text-nowrap"><a href="https://carpentries.org">The
+      Carpentries</a></span>.
+    </p>
+  </div>
+</div>
+
+
+<!--  Algolia DocSearch -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript"> docsearch({
+ apiKey: '4c64cef535ab2b7c8d1b73ed13f283e1',
+ indexName: 'datacarpentry',
+ inputSelector: '#search-box',
+ debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
